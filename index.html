@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Generator Hub</title>
+    <title>ArtCanvas - Digital Drawing Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s ease;
         }
 
         :root {
@@ -18,576 +17,588 @@
             --secondary: #8b5cf6;
             --accent: #a855f7;
             --dark: #0f172a;
-            --darker: #020617;
             --light: #f8fafc;
-            --card-bg: #1e293b;
-            --body-bg: #0c1220;
-            --text: #e2e8f0;
-            --neon: #00f7ff;
+            --card-bg: #ffffff;
+            --body-bg: #f0f2f5;
+            --text: #334155;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--body-bg), var(--darker));
+            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
         header {
-            background: rgba(15, 23, 42, 0.8);
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
-            padding: 1.2rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            box-shadow: 0 8px 20px var(--shadow);
         }
 
         .logo {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
-            font-size: 1.8rem;
-            font-weight: 700;
+            margin-bottom: 15px;
         }
 
-        .logo span {
-            background: linear-gradient(90deg, var(--neon), var(--primary));
+        .logo i {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .logo i {
-            color: var(--neon);
-            animation: pulse 2s infinite;
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
         }
 
-        .nav-buttons {
+        .container {
             display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 25px;
+        }
+
+        .toolbar {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tool-section {
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-section h2 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-section h2 i {
+            width: 30px;
+            text-align: center;
+        }
+
+        .colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .color {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .color:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .color.active {
+            transform: scale(1.15);
+            box-shadow: 0 0 0 3px white, 0 0 0 5px var(--primary);
+        }
+
+        .tool-btn {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            text-align: left;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .tool-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tool-btn i {
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        .brush-size {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .size-option {
+            display: flex;
+            align-items: center;
             gap: 15px;
         }
 
-        .theme-toggle, .generate-btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+        .size-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .size-label {
+            flex: 1;
+        }
+
+        #brushSlider {
+            width: 100%;
+        }
+
+        .canvas-container {
+            flex: 3;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            height: 75vh;
+        }
+
+        #drawingCanvas {
+            background: white;
+            cursor: crosshair;
+            width: 100%;
+            height: 100%;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px;
             border: none;
-            border-radius: 50px;
-            padding: 0.8rem 1.8rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover, .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.6);
-        }
-
-        .theme-toggle:active, .generate-btn:active {
-            transform: translateY(0);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 4rem 1rem;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, var(--text), var(--neon));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            opacity: 0.85;
-        }
-
-        .ai-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .feature-card {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 15px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-card i {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--neon);
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .post-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-
-        .post-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s ease;
-            position: relative;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .post-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-
-        .post-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.3);
-        }
-
-        .post-card video {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            background: #000;
-        }
-
-        .post-content {
-            padding: 1.8rem;
-        }
-
-        .post-content h2 {
-            color: var(--neon);
-            margin-bottom: 0.8rem;
-            font-size: 1.6rem;
-        }
-
-        .post-content p {
-            margin-bottom: 1.5rem;
-            color: var(--text);
-            opacity: 0.9;
-        }
-
-        .author-info {
-            display: flex;
-            align-items: center;
             gap: 10px;
-            margin-bottom: 0.8rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .author-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+
+        .action-btn.save {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            font-weight: bold;
-            font-size: 1.3rem;
         }
 
-        .author-info p {
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .timestamp {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-
-        .ai-generated-tag {
-            background: rgba(0, 247, 255, 0.15);
-            color: var(--neon);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-top: 0.5rem;
+        .action-btn.clear {
+            background: #f8f9fa;
+            color: #e53e3e;
         }
 
         footer {
             text-align: center;
-            padding: 3rem;
+            padding: 30px 20px;
+            margin-top: 40px;
             color: var(--text);
             font-size: 1rem;
-            margin-top: 5rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
             position: relative;
         }
 
         .creator-signature {
-            font-size: 1.4rem;
-            margin-top: 1rem;
+            font-size: 1.5rem;
+            margin-top: 15px;
             font-weight: bold;
-            background: linear-gradient(90deg, var(--neon), var(--primary));
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            font-family: 'Brush Script MT', cursive;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .tool-status {
+            background: rgba(255, 255, 255, 0.9);
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .post-card {
-            animation: fadeIn 0.7s ease forwards;
-            opacity: 0;
-        }
-
-        .post-card:nth-child(1) { animation-delay: 0.1s; }
-        .post-card:nth-child(2) { animation-delay: 0.2s; }
-        .post-card:nth-child(3) { animation-delay: 0.3s; }
-        .post-card:nth-child(4) { animation-delay: 0.4s; }
-        .post-card:nth-child(5) { animation-delay: 0.5s; }
-        .post-card:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .post-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
+        .current-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
         }
 
         @media (max-width: 768px) {
-            .header-content {
+            .container {
                 flex-direction: column;
-                gap: 1.2rem;
             }
             
-            .hero h1 {
-                font-size: 2.3rem;
+            .toolbar {
+                width: 100%;
             }
             
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .post-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .ai-features {
-                grid-template-columns: 1fr;
+            h1 {
+                font-size: 2.2rem;
             }
         }
 
-        @media (max-width: 480px) {
-            .hero {
-                padding: 3rem 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .theme-toggle, .generate-btn {
-                padding: 0.6rem 1.4rem;
-                font-size: 0.9rem;
-            }
+        /* Drawing cursor */
+        canvas {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="black" stroke-width="1"/></svg>') 8 8, auto;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-robot"></i>
-                <h1><span>AI</span> VideoHub</h1>
-            </div>
-            <div class="nav-buttons">
-                <button class="generate-btn">
-                    <i class="fas fa-wand-magic-sparkles"></i> Generate Video
-                </button>
-                <button class="theme-toggle" onclick="toggleDarkMode()">
-                    <i class="fas fa-moon"></i> Dark Mode
-                </button>
-            </div>
+        <div class="logo">
+            <i class="fas fa-paint-brush"></i>
+            <h1>ArtCanvas</h1>
         </div>
+        <p class="tagline">Express your creativity with our digital drawing platform</p>
     </header>
 
     <div class="container">
-        <div class="hero">
-            <h1>AI-Powered Video Generation</h1>
-            <p>Transform your ideas into stunning videos with our cutting-edge AI technology. Completely free, no experience required.</p>
-            <button class="generate-btn" style="font-size: 1.2rem; padding: 1rem 2.5rem;">
-                <i class="fas fa-play-circle"></i> Generate Your First Video
-            </button>
+        <div class="toolbar">
+            <div class="tool-section">
+                <h2><i class="fas fa-pencil-alt"></i> Drawing Tools</h2>
+                <button class="tool-btn active" id="penTool">
+                    <i class="fas fa-pen"></i> Pen
+                </button>
+                <button class="tool-btn" id="eraserTool">
+                    <i class="fas fa-eraser"></i> Eraser
+                </button>
+            </div>
+
+            <div class="tool-section">
+                <h2><i class="fas fa-palette"></i> Colors</h2>
+                <div class="colors">
+                    <div class="color active" style="background-color: #000000;" data-color="#000000"></div>
+                    <div class="color" style="background-color: #ef4444;" data-color="#ef4444"></div>
+                    <div class="color" style="background-color: #f97316;" data-color="#f97316"></div>
+                    <div class="color" style="background-color: #eab308;" data-color="#eab308"></div>
+                    <div class="color" style="background-color: #22c55e;" data-color="#22c55e"></div>
+                    <div class="color" style="background-color: #3b82f6;" data-color="#3b82f6"></div>
+                    <div class="color" style="background-color: #6366f1;" data-color="#6366f1"></div>
+                    <div class="color" style="background-color: #8b5cf6;" data-color="#8b5cf6"></div>
+                    <div class="color" style="background-color: #ec4899;" data-color="#ec4899"></div>
+                </div>
+                <div class="custom-color" style="margin-top: 20px;">
+                    <button class="tool-btn" id="customColor">
+                        <i class="fas fa-eyedropper"></i> Custom Color
+                        <input type="color" id="colorPicker" style="opacity: 0; position: absolute; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer;">
+                    </button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h2><i class="fas fa-brush"></i> Brush Size</h2>
+                <div class="brush-size">
+                    <div class="size-option">
+                        <div class="size-preview" id="sizePreview">5</div>
+                        <div class="size-label">Brush Size: <span id="brushSizeValue">5</span>px</div>
+                    </div>
+                    <input type="range" id="brushSlider" min="1" max="50" value="5">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn save" id="saveBtn">
+                    <i class="fas fa-download"></i> Save Drawing
+                </button>
+                <button class="action-btn clear" id="clearBtn">
+                    <i class="fas fa-trash-alt"></i> Clear Canvas
+                </button>
+            </div>
         </div>
 
-        <div class="ai-features">
-            <div class="feature-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Instant Generation</h3>
-                <p>Create professional videos in seconds with our advanced AI algorithms. No rendering time required.</p>
+        <div class="canvas-container">
+            <canvas id="drawingCanvas"></canvas>
+            <div class="tool-status">
+                <div class="current-color" id="currentColorPreview" style="background-color: #000000;"></div>
+                <span>Pen (<span id="currentSize">5</span>px)</span>
             </div>
-            <div class="feature-card">
-                <i class="fas fa-infinity"></i>
-                <h3>Unlimited Creativity</h3>
-                <p>Generate any style of video - from animations to realistic scenes. Your imagination is the only limit.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-lock-open"></i>
-                <h3>Completely Free</h3>
-                <p>Access all our powerful AI video generation tools without any cost. No hidden fees, ever.</p>
-            </div>
-        </div>
-
-        <h2 style="text-align: center; font-size: 2.5rem; margin: 4rem 0 2rem; background: linear-gradient(90deg, var(--neon), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-            Recently Generated Videos
-        </h2>
-
-        <div class="post-grid" id="postContainer">
-            <!-- Posts will be dynamically inserted here -->
         </div>
     </div>
 
     <footer>
-        <p>© 2023 AI Video Generator Hub | The Future of Content Creation</p>
-        <p class="creator-signature">Created by __. yadhuu.__</p>
+        <p>Express your creativity with ArtCanvas - a free digital drawing platform</p>
+        <p class="creator-signature">Created by @.__yadhu.__</p>
     </footer>
 
     <script>
-        // Sample AI-generated videos data
-        const posts = [
-            {
-                title: "Futuristic Cityscape",
-                content: "AI-generated vision of a neon-lit metropolis in 2050, showcasing flying vehicles and holographic advertisements.",
-                media: "https://assets.mixkit.co/videos/preview/mixkit-flying-through-a-futuristic-city-at-night-31555-large.mp4",
-                date: "Aug 15, 2023",
-                ai: true
-            },
-            {
-                title: "Deep Sea Exploration",
-                content: "AI-generated deep ocean scene with bioluminescent creatures and underwater landscapes never seen by humans.",
-                media: "https://assets.mixkit.co/videos/preview/mixkit-school-of-fish-swimming-in-the-deep-sea-3158-large.mp4",
-                date: "Aug 12, 2023",
-                ai: true
-            },
-            {
-                title: "Robotic Dance Performance",
-                content: "AI-created choreography performed by hyper-realistic humanoid robots in a zero-gravity environment.",
-                media: "https://assets.mixkit.co/videos/preview/mixkit-robot-dancing-at-a-disco-3085-large.mp4",
-                date: "Aug 10, 2023",
-                ai: true
-            },
-            {
-                title: "Alien Planet Expedition",
-                content: "AI-generated visualization of humanity's first expedition to an Earth-like exoplanet in the Andromeda galaxy.",
-                media: "https://assets.mixkit.co/videos/preview/mixkit-astronaut-in-outer-space-31554-large.mp4",
-                date: "Aug 8, 2023",
-                ai: true
-            },
-            {
-                title: "Neural Network Visualization",
-                content: "AI-created representation of a deep learning neural network processing complex data in real-time.",
-                media: "https://assets.mixkit.co/videos/preview/mixkit-abstract-molecular-structure-31553-large.mp4",
-                date: "Aug 5, 2023",
-                ai: true
-            },
-            {
-                title: "Virtual Fashion Show",
-                content: "AI-generated haute couture fashion show featuring designs that transform based on viewer emotions.",
-                media: "https://assets.mixkit.co/videos/preview/mixkit-woman-walking-on-a-virtual-reality-catwalk-3131-large.mp4",
-                date: "Aug 1, 2023",
-                ai: true
-            }
-        ];
-
-        // Function to render AI-generated video posts
-        function renderPosts() {
-            const container = document.getElementById('postContainer');
-            container.innerHTML = '';
+        // Canvas setup
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas dimensions
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
             
-            posts.forEach(post => {
-                const postEl = document.createElement('div');
-                postEl.className = 'post-card';
-                
-                postEl.innerHTML = `
-                    <video controls poster="https://via.placeholder.com/400x220/1e293b/94a3b8?text=AI+Video">
-                        <source src="${post.media}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="post-content">
-                        <h2>${post.title}</h2>
-                        <p>${post.content}</p>
-                        <div class="author-info">
-                            <div class="author-avatar">AI</div>
-                            <p><strong>Generated by NeuralVid AI</strong></p>
-                        </div>
-                        <div class="timestamp">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>${post.date}</span>
-                        </div>
-                        ${post.ai ? '<div class="ai-generated-tag"><i class="fas fa-microchip"></i> AI Generated</div>' : ''}
-                    </div>
-                `;
-                
-                container.appendChild(postEl);
-            });
-        }
-
-        // Toggle dark mode function
-        function toggleDarkMode() {
-            const body = document.body;
-            const themeToggle = document.querySelector('.theme-toggle i');
-            const themeText = document.querySelector('.theme-toggle');
-            
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                themeToggle.classList.remove('fa-sun');
-                themeToggle.classList.add('fa-moon');
-                themeText.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+            // Redraw content if needed
+            if (window.canvasImage) {
+                const img = new Image();
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = window.canvasImage;
             } else {
-                body.classList.add('light-mode');
-                themeToggle.classList.remove('fa-moon');
-                themeToggle.classList.add('fa-sun');
-                themeText.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+                // Set initial background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
         }
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', () => {
-            renderPosts();
+        
+        // Initialize canvas
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Drawing state
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let currentColor = '#000000';
+        let brushSize = 5;
+        let currentTool = 'pen';
+        
+        // Drawing functions
+        function startDrawing(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
             
-            // Add event listeners to generate buttons
-            document.querySelectorAll('.generate-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    alert('🚀 Starting AI video generation process...\n\nYour video will be ready in a few moments!');
-                });
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            if (currentTool === 'pen') {
+                ctx.strokeStyle = currentColor;
+            } else if (currentTool === 'eraser') {
+                ctx.strokeStyle = '#ffffff';
+            }
+            
+            ctx.lineWidth = brushSize;
+            ctx.stroke();
+            
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+            // Save canvas state for undo/redo if needed
+            window.canvasImage = canvas.toDataURL();
+        }
+        
+        // Event listeners for drawing
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchend', () => {
+            const mouseEvent = new MouseEvent('mouseup', {});
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        // Tool selection
+        document.getElementById('penTool').addEventListener('click', () => {
+            currentTool = 'pen';
+            document.getElementById('penTool').classList.add('active');
+            document.getElementById('eraserTool').classList.remove('active');
+            document.querySelector('.tool-status').innerHTML = `
+                <div class="current-color" id="currentColorPreview" style="background-color: ${currentColor};"></div>
+                <span>Pen (<span id="currentSize">${brushSize}</span>px)</span>
+            `;
+        });
+        
+        document.getElementById('eraserTool').addEventListener('click', () => {
+            currentTool = 'eraser';
+            document.getElementById('eraserTool').classList.add('active');
+            document.getElementById('penTool').classList.remove('active');
+            document.querySelector('.tool-status').innerHTML = `
+                <div class="current-color" style="background-color: #ffffff; border: 1px solid #ddd;"></div>
+                <span>Eraser (<span id="currentSize">${brushSize}</span>px)</span>
+            `;
+        });
+        
+        // Color selection
+        document.querySelectorAll('.color').forEach(color => {
+            color.addEventListener('click', () => {
+                document.querySelectorAll('.color').forEach(c => c.classList.remove('active'));
+                color.classList.add('active');
+                currentColor = color.getAttribute('data-color');
+                document.getElementById('currentColorPreview').style.backgroundColor = currentColor;
+                
+                // Switch to pen when selecting a color
+                if (currentTool === 'eraser') {
+                    currentTool = 'pen';
+                    document.getElementById('penTool').classList.add('active');
+                    document.getElementById('eraserTool').classList.remove('active');
+                    document.querySelector('.tool-status').innerHTML = `
+                        <div class="current-color" id="currentColorPreview" style="background-color: ${currentColor};"></div>
+                        <span>Pen (<span id="currentSize">${brushSize}</span>px)</span>
+                    `;
+                }
             });
         });
-
-        // Add light mode styles dynamically
-        const style = document.createElement('style');
-        style.innerHTML = `
-            .light-mode {
-                --body-bg: #f0f2f5;
-                --darker: #dbe4ee;
-                --card-bg: #ffffff;
-                --text: #334155;
-                --dark: #f8fafc;
-                --neon: #6366f1;
-            }
+        
+        // Custom color picker
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            currentColor = e.target.value;
+            document.querySelectorAll('.color').forEach(c => c.classList.remove('active'));
+            document.getElementById('currentColorPreview').style.backgroundColor = currentColor;
             
-            .light-mode .feature-card {
-                background: rgba(255, 255, 255, 0.7);
-                border: 1px solid rgba(99, 102, 241, 0.1);
-            }
+            // Create a temporary color element to show the custom color as active
+            const customColor = document.createElement('div');
+            customColor.className = 'color active';
+            customColor.style.backgroundColor = currentColor;
+            customColor.setAttribute('data-color', currentColor);
+            document.querySelector('.colors').appendChild(customColor);
             
-            .light-mode .hero::before {
-                background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            // Switch to pen when selecting a color
+            currentTool = 'pen';
+            document.getElementById('penTool').classList.add('active');
+            document.getElementById('eraserTool').classList.remove('active');
+            document.querySelector('.tool-status').innerHTML = `
+                <div class="current-color" id="currentColorPreview" style="background-color: ${currentColor};"></div>
+                <span>Pen (<span id="currentSize">${brushSize}</span>px)</span>
+            `;
+        });
+        
+        // Brush size control
+        document.getElementById('brushSlider').addEventListener('input', (e) => {
+            brushSize = e.target.value;
+            document.getElementById('brushSizeValue').textContent = brushSize;
+            document.getElementById('currentSize').textContent = brushSize;
+            document.getElementById('sizePreview').textContent = brushSize;
+            document.getElementById('sizePreview').style.width = `${brushSize + 20}px`;
+            document.getElementById('sizePreview').style.height = `${brushSize + 20}px`;
+        });
+        
+        // Clear canvas
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear the canvas?')) {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                window.canvasImage = null;
             }
-            
-            .light-mode .post-card {
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-                border: 1px solid rgba(0, 0, 0, 0.05);
-            }
-            
-            .light-mode .post-card:hover {
-                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
-            }
-            
-            .light-mode .ai-generated-tag {
-                background: rgba(99, 102, 241, 0.1);
-                color: var(--primary);
-            }
-        `;
-        document.head.appendChild(style);
+        });
+        
+        // Save drawing
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'artcanvas-drawing.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+        
+        // Set initial brush size preview
+        document.getElementById('sizePreview').style.width = `${brushSize + 20}px`;
+        document.getElementById('sizePreview').style.height = `${brushSize + 20}px`;
     </script>
 </body>
 </html>
