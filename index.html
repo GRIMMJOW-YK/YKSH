@@ -1,604 +1,562 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArtCanvas - Digital Drawing Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #a855f7;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --card-bg: #ffffff;
-            --body-bg: #f0f2f5;
-            --text: #334155;
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        header {
-            max-width: 1200px;
-            margin: 0 auto 30px;
-            padding: 20px;
-            text-align: center;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 20px var(--shadow);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .logo i {
-            color: var(--primary);
-            font-size: 2.5rem;
-        }
-
-        h1 {
-            font-size: 3rem;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: var(--text);
-            max-width: 600px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            max-width: 1200px;
-            margin: 0 auto;
-            gap: 25px;
-        }
-
-        .toolbar {
-            flex: 1;
-            min-width: 250px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 20px var(--shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .tool-section {
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .tool-section h2 {
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .tool-section h2 i {
-            width: 30px;
-            text-align: center;
-        }
-
-        .colors {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .color {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 2px solid white;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-        }
-
-        .color:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .color.active {
-            transform: scale(1.15);
-            box-shadow: 0 0 0 3px white, 0 0 0 5px var(--primary);
-        }
-
-        .tool-btn {
-            background: white;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 15px;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            text-align: left;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s;
-        }
-
-        .tool-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .tool-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .tool-btn i {
-            font-size: 1.2rem;
-            width: 25px;
-        }
-
-        .brush-size {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .size-option {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .size-preview {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.8rem;
-        }
-
-        .size-label {
-            flex: 1;
-        }
-
-        #brushSlider {
-            width: 100%;
-        }
-
-        .canvas-container {
-            flex: 3;
-            min-width: 300px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            position: relative;
-            height: 75vh;
-        }
-
-        #drawingCanvas {
-            background: white;
-            cursor: crosshair;
-            width: 100%;
-            height: 100%;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-        }
-
-        .action-btn:active {
-            transform: translateY(1px);
-        }
-
-        .action-btn.save {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .action-btn.clear {
-            background: #f8f9fa;
-            color: #e53e3e;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            color: var(--text);
-            font-size: 1rem;
-            position: relative;
-        }
-
-        .creator-signature {
-            font-size: 1.5rem;
-            margin-top: 15px;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-            font-family: 'Brush Script MT', cursive;
-        }
-
-        .tool-status {
-            background: rgba(255, 255, 255, 0.9);
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .current-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid #ddd;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .toolbar {
-                width: 100%;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-        }
-
-        /* Drawing cursor */
-        canvas {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="black" stroke-width="1"/></svg>') 8 8, auto;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GRIMMJOW-YK | Interstellar</title>
+  <link rel="icon" href="https://cdn.ironman.my.id/i/42b7oj.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #000 url('https://cdn.ironman.my.id/i/q54gux.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #e6e6ff;
+      font-family: 'Exo 2', sans-serif;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 20, 0.85);
+      z-index: -1;
+    }
+    
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .star {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      animation: twinkle 5s infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    
+    header {
+      text-align: center;
+      padding: 1.5em 1em;
+      background: rgba(10, 10, 30, 0.7);
+      backdrop-filter: blur(5px);
+      border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+      position: relative;
+      z-index: 10;
+    }
+    
+    header img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 2px solid #8a2be2;
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    header img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(138, 43, 226, 0.9);
+    }
+    
+    h1 {
+      margin-top: 0.5em;
+      font-size: 2.5rem;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px rgba(177, 156, 217, 0.8);
+      position: relative;
+      display: inline-block;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #8a2be2, transparent);
+    }
+    
+    .post {
+      background: rgba(25, 25, 50, 0.7);
+      border-radius: 15px;
+      margin: 1.5em;
+      padding: 1.5em;
+      transition: transform 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .post::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    
+    .post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(138, 43, 226, 0.3);
+    }
+    
+    .post:hover::before {
+      opacity: 1;
+    }
+    
+    .post img, .post video {
+      max-width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .post img:hover, .post video:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+    }
+    
+    .post h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      margin: 1rem 0;
+      color: #b19cd9;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .post h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: #8a2be2;
+    }
+    
+    .post p {
+      margin: 1rem 0;
+      line-height: 1.7;
+      font-size: 1.1rem;
+    }
+    
+    .post-content {
+      background: rgba(30, 15, 60, 0.4);
+      padding: 1.2rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      border-left: 3px solid #8a2be2;
+    }
+    
+    .timestamp {
+      color: #b19cd9;
+      font-size: 0.9em;
+      margin-top: 0.5em;
+      font-style: italic;
+    }
+    
+    .posted-by {
+      display: inline-block;
+      background: rgba(138, 43, 226, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      margin: 0.5rem 0;
+      font-weight: 500;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 1.5em;
+      font-size: 0.9em;
+      background: rgba(10, 10, 30, 0.7);
+      backdrop-filter: blur(5px);
+      border-top: 1px solid rgba(138, 43, 226, 0.3);
+      color: #b19cd9;
+      margin-top: 2rem;
+    }
+    
+    .footer a {
+      color: #8a2be2;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .footer a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(177, 156, 217, 0.8);
+    }
+    
+    .dark-mode-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      padding: 0.6em 1.2em;
+      background: rgba(138, 43, 226, 0.3);
+      color: #e6e6ff;
+      border: 1px solid rgba(138, 43, 226, 0.5);
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 500;
+      z-index: 100;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+    }
+    
+    .dark-mode-toggle:hover {
+      background: rgba(138, 43, 226, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+    }
+    
+    .audio-control {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(138, 43, 226, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e6e6ff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s;
+      border: 1px solid rgba(138, 43, 226, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    
+    .audio-control:hover {
+      background: rgba(138, 43, 226, 0.5);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+    }
+    
+    .dark {
+      background: #111;
+      color: #f0f0f0;
+    }
+    
+    .dark .post {
+      background: rgba(40, 20, 80, 0.7);
+    }
+    
+    .interstellar-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      text-align: center;
+      margin: 1rem 0;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(100, 150, 255, 0.8);
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .interstellar-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #5d0ebd, #8a2be2, #5d0ebd, transparent);
+    }
+    
+    .interstellar-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      background: rgba(10, 5, 25, 0.5);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      border: 1px solid rgba(100, 150, 255, 0.3);
+    }
+    
+    .interstellar-content p {
+      margin-bottom: 1rem;
+    }
+    
+    .interstellar-content p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .glow-text {
+      color: #b19cd9;
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(177, 156, 217, 0.7);
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .post {
+        margin: 1em;
+        padding: 1em;
+      }
+      
+      .post h2 {
+        font-size: 1.5rem;
+      }
+      
+      .interstellar-title {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      header img {
+        width: 90px;
+        height: 90px;
+      }
+      
+      .post {
+        margin: 0.8em;
+        padding: 0.8em;
+      }
+      
+      .interstellar-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fas fa-paint-brush"></i>
-            <h1>ArtCanvas</h1>
-        </div>
-        <p class="tagline">Express your creativity with our digital drawing platform</p>
-    </header>
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Mode</button>
+  <button class="audio-control" id="audioControl">
+    <i class="fas fa-volume-mute"></i>
+  </button>
+  
+  <div class="stars" id="stars"></div>
+  
+  <header>
+    <img src="https://cdn.ironman.my.id/i/42b7oj.jpg" alt="GRIMMJOW-YK Logo">
+    <h1>GRIMMJOW-YK</h1>
+  </header>
 
-    <div class="container">
-        <div class="toolbar">
-            <div class="tool-section">
-                <h2><i class="fas fa-pencil-alt"></i> Drawing Tools</h2>
-                <button class="tool-btn active" id="penTool">
-                    <i class="fas fa-pen"></i> Pen
-                </button>
-                <button class="tool-btn" id="eraserTool">
-                    <i class="fas fa-eraser"></i> Eraser
-                </button>
-            </div>
+  <main id="post-container"></main>
 
-            <div class="tool-section">
-                <h2><i class="fas fa-palette"></i> Colors</h2>
-                <div class="colors">
-                    <div class="color active" style="background-color: #000000;" data-color="#000000"></div>
-                    <div class="color" style="background-color: #ef4444;" data-color="#ef4444"></div>
-                    <div class="color" style="background-color: #f97316;" data-color="#f97316"></div>
-                    <div class="color" style="background-color: #eab308;" data-color="#eab308"></div>
-                    <div class="color" style="background-color: #22c55e;" data-color="#22c55e"></div>
-                    <div class="color" style="background-color: #3b82f6;" data-color="#3b82f6"></div>
-                    <div class="color" style="background-color: #6366f1;" data-color="#6366f1"></div>
-                    <div class="color" style="background-color: #8b5cf6;" data-color="#8b5cf6"></div>
-                    <div class="color" style="background-color: #ec4899;" data-color="#ec4899"></div>
-                </div>
-                <div class="custom-color" style="margin-top: 20px;">
-                    <button class="tool-btn" id="customColor">
-                        <i class="fas fa-eyedropper"></i> Custom Color
-                        <input type="color" id="colorPicker" style="opacity: 0; position: absolute; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer;">
-                    </button>
-                </div>
-            </div>
+  <footer class="footer">
+    © 2025 __.yadhu.__ | Follow on <a href="https://instagram.com" target="_blank">Instagram</a>
+  </footer>
+  
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <!-- Audio element for background music -->
+  <audio id="bgAudio" loop>
+    <source src="https://cdn.ironman.my.id/i/15ax0y.mp4" type="audio/mp4">
+  </audio>
 
-            <div class="tool-section">
-                <h2><i class="fas fa-brush"></i> Brush Size</h2>
-                <div class="brush-size">
-                    <div class="size-option">
-                        <div class="size-preview" id="sizePreview">5</div>
-                        <div class="size-label">Brush Size: <span id="brushSizeValue">5</span>px</div>
-                    </div>
-                    <input type="range" id="brushSlider" min="1" max="50" value="5">
-                </div>
-            </div>
+  <script>
+    const posts = [
+      {
+        type: 'image',
+        title: 'INTERSTELLAR',
+        content: 'Interstellar" is a science fiction film where a team of astronauts travels through a wormhole near Saturn to find a new habitable planet for humanity, as Earth is facing environmental collapse. The story focuses on ex-NASA pilot Joseph Cooper, who leaves his family to embark on this perilous journey, driven by the hope of saving the human race.',
+        media: 'https://cdn.ironman.my.id/i/q54gux.jpg',
+        date: 'July 9, 2025, 10:00 AM IST',
+        interstellar: true
+      },
+      {
+        type: 'image',
+        title: 'MASTER!',
+        content: 'MASTER THE BLASTER',
+        media: 'https://cdn.ironman.my.id/i/mx4psy.jpg',
+        date: 'July 8, 2025, 11:31 AM IST'
+      },
+      {
+        type: 'video',
+        title: 'GRIMMJOW ☠️',
+        content: '',
+        media: 'https://cdn.ironman.my.id/i/z8qqze.mp4',
+        date: 'July 8, 2025, 11:31 AM IST'
+      },
+      {
+        type: 'image',
+        title: 'SACHIEN',
+        content: 'Sachein" is a Tamil romantic comedy film starring Vijay and Genelia, directed by John Mahendran. The movie tells the story of Sachein, a college student who falls for Shalini, a practical-minded girl who initially feigns indifference. A key plot point involves Sachein trying to win her over, with a 30-day challenge. The film also features Bipasha Basu, Vadivelu, and others in supporting roles. "Sachein" was re-released in theaters in April 2025 to celebrate its 20th anniversary.',
+        media: 'https://cdn.ironman.my.id/i/do9lv3.jpg',
+        date: 'July 8, 2025, 11:31 PM IST'
+      },
+      {
+        type: 'video',
+        title: 'Feel the Song 🎵',
+        content: 'Let the music speak.',
+        media: 'https://cdn.ironman.my.id/i/g1zojs.mp4',
+        date: 'July 8, 2025, 11:31 PM IST'
+      },
+      {
+        type: 'image',
+        title: 'SAFVAN GAY🏳‍🌈',
+        content: 'Safvan gay is a male breed his father name is mutholuvi his mother name is Muhammed siyan his father is real estate dealer and he is a ultimate gay🏳‍🌈  his mother siyan a rocket gay🏳‍🌈 and his father was very rich🏳‍🌈 beacus his father was a panchavarna kundan🏳‍🌈.',
+        media: 'https://cdn.ironman.my.id/i/x5inu4.jpg',
+        date: 'July 8, 2025, 11:45 PM IST'
+      }
+    ];
 
-            <div class="action-buttons">
-                <button class="action-btn save" id="saveBtn">
-                    <i class="fas fa-download"></i> Save Drawing
-                </button>
-                <button class="action-btn clear" id="clearBtn">
-                    <i class="fas fa-trash-alt"></i> Clear Canvas
-                </button>
-            </div>
-        </div>
+    const container = document.getElementById('post-container');
+    const audioControl = document.getElementById('audioControl');
+    const bgAudio = document.getElementById('bgAudio');
+    const starsContainer = document.getElementById('stars');
 
-        <div class="canvas-container">
-            <canvas id="drawingCanvas"></canvas>
-            <div class="tool-status">
-                <div class="current-color" id="currentColorPreview" style="background-color: #000000;"></div>
-                <span>Pen (<span id="currentSize">5</span>px)</span>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>Express your creativity with ArtCanvas - a free digital drawing platform</p>
-        <p class="creator-signature">Created by @.__yadhu.__</p>
-    </footer>
-
-    <script>
-        // Canvas setup
-        const canvas = document.getElementById('drawingCanvas');
-        const ctx = canvas.getContext('2d');
+    // Create stars for background
+    function createStars() {
+      const starCount = 200;
+      
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
         
-        // Set canvas dimensions
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
-            
-            // Redraw content if needed
-            if (window.canvasImage) {
-                const img = new Image();
-                img.onload = function() {
-                    ctx.drawImage(img, 0, 0);
-                };
-                img.src = window.canvasImage;
-            } else {
-                // Set initial background
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
+        // Random properties
+        const size = Math.random() * 2 + 1;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 5 + 5;
+        const delay = Math.random() * 5;
+        
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${posX}%`;
+        star.style.top = `${posY}%`;
+        star.style.animationDuration = `${duration}s`;
+        star.style.animationDelay = `${delay}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    // Toggle audio
+    function toggleAudio() {
+      const isMuted = bgAudio.muted;
+      
+      bgAudio.muted = !isMuted;
+      
+      // Update icon
+      audioControl.innerHTML = isMuted ? 
+        '<i class="fas fa-volume-up"></i>' : 
+        '<i class="fas fa-volume-mute"></i>';
+      
+      // If unmuting, play audio
+      if (!bgAudio.muted && bgAudio.paused) {
+        bgAudio.play().catch(e => console.log("Audio play prevented:", e));
+      }
+    }
+    
+    // Initialize page
+    function initPage() {
+      createStars();
+      
+      // Render posts
+      posts.forEach(post => {
+        const postEl = document.createElement('div');
+        postEl.className = 'post';
+        
+        if (post.interstellar) {
+          postEl.innerHTML = `
+            <img src="${post.media}" alt="${post.title}">
+            <h2>${post.title}</h2>
+            <div class="post-content">
+              <div class="interstellar-title">${post.title}</div>
+              <div class="interstellar-content">
+                <p>${post.content}</p>
+                <p>In a dystopian future, Earth is ravaged by blight and dust storms, making it nearly uninhabitable. Joseph Cooper, a former NASA pilot and engineer, now a farmer, discovers a NASA base hidden near his home. He is recruited to pilot the spacecraft Endurance through a newly discovered wormhole, hoping to find a suitable planet for humanity's survival.</p>
+                <p>The mission involves traversing the wormhole, encountering extreme time dilation near a black hole, and facing difficult decisions that test the limits of human endurance and love. Ultimately, the film explores themes of love, sacrifice, humanity's survival, and the vastness of space and time.</p>
+              </div>
+            </div>
+            <p class="posted-by">Posted by Yadhu</p>
+            <p class="timestamp">${post.date}</p>
+          `;
+        } else if (post.type === 'image') {
+          postEl.innerHTML = `
+            <img src="${post.media}" alt="${post.title}">
+            <h2>${post.title}</h2>
+            <div class="post-content">${post.content}</div>
+            <p class="posted-by">Posted by Yadhu</p>
+            <p class="timestamp">${post.date}</p>
+          `;
+        } else if (post.type === 'video') {
+          postEl.innerHTML = `
+            <video controls>
+              <source src="${post.media}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <h2>${post.title}</h2>
+            <div class="post-content">${post.content}</div>
+            <p class="posted-by">Posted by Yadhu</p>
+            <p class="timestamp">${post.date}</p>
+          `;
         }
-        
-        // Initialize canvas
-        window.addEventListener('load', resizeCanvas);
-        window.addEventListener('resize', resizeCanvas);
-        
-        // Drawing state
-        let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
-        let currentColor = '#000000';
-        let brushSize = 5;
-        let currentTool = 'pen';
-        
-        // Drawing functions
-        function startDrawing(e) {
-            isDrawing = true;
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-        }
-        
-        function draw(e) {
-            if (!isDrawing) return;
-            
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            
-            if (currentTool === 'pen') {
-                ctx.strokeStyle = currentColor;
-            } else if (currentTool === 'eraser') {
-                ctx.strokeStyle = '#ffffff';
-            }
-            
-            ctx.lineWidth = brushSize;
-            ctx.stroke();
-            
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-        }
-        
-        function stopDrawing() {
-            isDrawing = false;
-            // Save canvas state for undo/redo if needed
-            window.canvasImage = canvas.toDataURL();
-        }
-        
-        // Event listeners for drawing
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-        
-        // Touch events for mobile
-        canvas.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousedown', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
-        });
-        
-        canvas.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousemove', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
-        });
-        
-        canvas.addEventListener('touchend', () => {
-            const mouseEvent = new MouseEvent('mouseup', {});
-            canvas.dispatchEvent(mouseEvent);
-        });
-        
-        // Tool selection
-        document.getElementById('penTool').addEventListener('click', () => {
-            currentTool = 'pen';
-            document.getElementById('penTool').classList.add('active');
-            document.getElementById('eraserTool').classList.remove('active');
-            document.querySelector('.tool-status').innerHTML = `
-                <div class="current-color" id="currentColorPreview" style="background-color: ${currentColor};"></div>
-                <span>Pen (<span id="currentSize">${brushSize}</span>px)</span>
-            `;
-        });
-        
-        document.getElementById('eraserTool').addEventListener('click', () => {
-            currentTool = 'eraser';
-            document.getElementById('eraserTool').classList.add('active');
-            document.getElementById('penTool').classList.remove('active');
-            document.querySelector('.tool-status').innerHTML = `
-                <div class="current-color" style="background-color: #ffffff; border: 1px solid #ddd;"></div>
-                <span>Eraser (<span id="currentSize">${brushSize}</span>px)</span>
-            `;
-        });
-        
-        // Color selection
-        document.querySelectorAll('.color').forEach(color => {
-            color.addEventListener('click', () => {
-                document.querySelectorAll('.color').forEach(c => c.classList.remove('active'));
-                color.classList.add('active');
-                currentColor = color.getAttribute('data-color');
-                document.getElementById('currentColorPreview').style.backgroundColor = currentColor;
-                
-                // Switch to pen when selecting a color
-                if (currentTool === 'eraser') {
-                    currentTool = 'pen';
-                    document.getElementById('penTool').classList.add('active');
-                    document.getElementById('eraserTool').classList.remove('active');
-                    document.querySelector('.tool-status').innerHTML = `
-                        <div class="current-color" id="currentColorPreview" style="background-color: ${currentColor};"></div>
-                        <span>Pen (<span id="currentSize">${brushSize}</span>px)</span>
-                    `;
-                }
-            });
-        });
-        
-        // Custom color picker
-        document.getElementById('colorPicker').addEventListener('input', (e) => {
-            currentColor = e.target.value;
-            document.querySelectorAll('.color').forEach(c => c.classList.remove('active'));
-            document.getElementById('currentColorPreview').style.backgroundColor = currentColor;
-            
-            // Create a temporary color element to show the custom color as active
-            const customColor = document.createElement('div');
-            customColor.className = 'color active';
-            customColor.style.backgroundColor = currentColor;
-            customColor.setAttribute('data-color', currentColor);
-            document.querySelector('.colors').appendChild(customColor);
-            
-            // Switch to pen when selecting a color
-            currentTool = 'pen';
-            document.getElementById('penTool').classList.add('active');
-            document.getElementById('eraserTool').classList.remove('active');
-            document.querySelector('.tool-status').innerHTML = `
-                <div class="current-color" id="currentColorPreview" style="background-color: ${currentColor};"></div>
-                <span>Pen (<span id="currentSize">${brushSize}</span>px)</span>
-            `;
-        });
-        
-        // Brush size control
-        document.getElementById('brushSlider').addEventListener('input', (e) => {
-            brushSize = e.target.value;
-            document.getElementById('brushSizeValue').textContent = brushSize;
-            document.getElementById('currentSize').textContent = brushSize;
-            document.getElementById('sizePreview').textContent = brushSize;
-            document.getElementById('sizePreview').style.width = `${brushSize + 20}px`;
-            document.getElementById('sizePreview').style.height = `${brushSize + 20}px`;
-        });
-        
-        // Clear canvas
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to clear the canvas?')) {
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                window.canvasImage = null;
-            }
-        });
-        
-        // Save drawing
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = 'artcanvas-drawing.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        });
-        
-        // Set initial brush size preview
-        document.getElementById('sizePreview').style.width = `${brushSize + 20}px`;
-        document.getElementById('sizePreview').style.height = `${brushSize + 20}px`;
-    </script>
+
+        container.appendChild(postEl);
+      });
+      
+      // Set initial audio state
+      bgAudio.volume = 0.4;
+      bgAudio.muted = true;
+      
+      // Event listeners
+      audioControl.addEventListener('click', toggleAudio);
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+    
+    // Start when page loads
+    window.onload = initPage;
+  </script>
 </body>
 </html>
