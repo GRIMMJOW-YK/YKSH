@@ -1,843 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cinemaniac - Movie Search</title>
-  <link rel="icon" href="https://cdn.ironman.my.id/i/x175tv.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GRIMMJOW-YK</title>
+  <link rel="icon" href="https://cdn.ironman.my.id/i/42b7oj.jpg" />
   <style>
-    * {
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      transition: background-color 0.3s, color 0.3s;
     }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f0f0f 0%, #1c1c1c 100%);
-      color: #fff;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 82, 82, 0.1) 0%, transparent 15%),
-        radial-gradient(circle at 90% 80%, rgba(255, 82, 82, 0.1) 0%, transparent 15%);
-    }
-    
-    /* Background Animation */
-    .bg-animation {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      overflow: hidden;
-    }
-    
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 82, 82, 0.1);
-      animation: float 15s infinite ease-in-out;
-    }
-    
-    .circle:nth-child(1) {
-      width: 300px;
-      height: 300px;
-      top: 10%;
-      left: 5%;
-      animation-delay: 0s;
-    }
-    
-    .circle:nth-child(2) {
-      width: 200px;
-      height: 200px;
-      top: 60%;
-      left: 80%;
-      animation-delay: 2s;
-    }
-    
-    .circle:nth-child(3) {
-      width: 250px;
-      height: 250px;
-      top: 40%;
-      left: 70%;
-      animation-delay: 4s;
-    }
-    
-    .circle:nth-child(4) {
-      width: 180px;
-      height: 180px;
-      top: 80%;
-      left: 10%;
-      animation-delay: 6s;
-    }
-    
-    @keyframes float {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      50% {
-        transform: translateY(-40px) rotate(180deg);
-        opacity: 0.7;
-      }
-      100% {
-        transform: translateY(0) rotate(360deg);
-        opacity: 1;
-      }
-    }
-    
-    /* Header Styles */
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.5rem 2rem;
-      background: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      border-bottom: 1px solid rgba(255, 82, 82, 0.2);
+      text-align: center;
+      padding: 1em;
+      background-color: #222;
     }
-    
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    header img {
+      width: 96px;
+      height: 96px;
+      border-radius: 12px;
+      border: 2px solid #555;
     }
-    
-    .logo {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ff5252, #ff0000);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 2px solid #fff;
-      box-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+    h1 {
+      margin-top: 0.5em;
+      font-size: 2em;
+      color: #f33;
     }
-    
-    .logo img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-    
-    .logo-text {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 2rem;
-      background: linear-gradient(to right, #ff5252, #ff0000);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: 1px;
-    }
-    
-    /* Search Container */
-    .search-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 2rem auto;
-      flex-direction: column;
-      padding: 0 1rem;
-      position: relative;
-    }
-    
-    .search-box {
-      width: 90%;
-      max-width: 700px;
-      position: relative;
-    }
-    
-    .search-box input {
-      width: 100%;
-      padding: 1.2rem 1.5rem;
-      padding-left: 60px;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 50px;
-      outline: none;
-      background: rgba(30, 30, 30, 0.8);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
-      backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 82, 82, 0.2);
-    }
-    
-    .search-box input:focus {
-      box-shadow: 0 0 25px rgba(255, 82, 82, 0.5);
-      border-color: rgba(255, 82, 82, 0.4);
-    }
-    
-    .search-icon {
-      position: absolute;
-      left: 25px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #ff5252;
-      font-size: 1.4rem;
-    }
-    
-    /* Results Section */
-    .results {
-      max-width: 1200px;
-      margin: 2rem auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      padding: 0 1.5rem;
-    }
-    
-    .movie {
-      background: rgba(30, 30, 30, 0.7);
-      padding: 1.5rem;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 82, 82, 0.1);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .movie::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, #ff5252, #ff0000);
-    }
-    
-    .movie:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-      border-color: rgba(255, 82, 82, 0.3);
-    }
-    
-    .movie img {
-      width: 100%;
+    .post {
+      background-color: #1c1c1c;
       border-radius: 10px;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      margin-bottom: 1.2rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease;
+      margin: 1em;
+      padding: 1em;
+      transition: transform 0.3s;
     }
-    
-    .movie:hover img {
-      transform: scale(1.03);
+    .post:hover {
+      transform: scale(1.01);
     }
-    
-    .movie h3 {
-      margin: 0.5rem 0 0.2rem;
-      color: #ff5252;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.4rem;
+    .post img, .post video {
+      max-width: 100%;
+      border-radius: 10px;
     }
-    
-    .movie p {
-      margin: 0.3rem 0;
-      font-size: 0.95rem;
-      color: #ddd;
-    }
-    
-    .rating {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 215, 0, 0.15);
-      padding: 5px 12px;
-      border-radius: 20px;
-      margin-top: 0.5rem;
-      font-size: 0.95rem;
-    }
-    
-    .rating i {
-      color: gold;
-    }
-    
-    .genre-list {
-      display: flex;
-      gap: 8px;
-      margin: 10px 0;
-      flex-wrap: wrap;
-    }
-    
-    .genre {
-      background: rgba(255, 82, 82, 0.2);
-      color: #ff9a8b;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-    }
-    
-    .overview {
-      margin-top: 10px;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: #bbb;
-      flex-grow: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    
-    /* Footer */
-    footer {
-      margin-top: 4rem;
-      text-align: center;
-      padding: 2.5rem 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.95rem;
+    .timestamp {
       color: #aaa;
-      background: rgba(10, 10, 10, 0.7);
-      backdrop-filter: blur(5px);
+      font-size: 0.9em;
+      margin-top: 0.5em;
     }
-    
-    .creator {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 0.5rem;
-      font-size: 1.1rem;
-    }
-    
-    .creator strong {
-      color: #ff5252;
-      font-weight: 600;
-    }
-    
-    .instagram-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 1rem;
-      color: #ff9a8b;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      background: rgba(255, 82, 82, 0.15);
-      padding: 8px 20px;
-      border-radius: 50px;
-    }
-    
-    .instagram-link:hover {
-      background: rgba(255, 82, 82, 0.3);
-      transform: translateY(-3px);
-    }
-    
-    .instagram-link img {
-      width: 20px;
-      height: 20px;
-      filter: invert(1);
-    }
-    
-    .copyright {
-      margin-top: 1.5rem;
-      color: #777;
-    }
-    
-    /* Loading Animation */
-    .loader {
-      display: none;
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(255, 82, 82, 0.3);
-      border-top: 5px solid #ff5252;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 2rem auto;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    /* Empty State */
-    .empty-state {
+    .footer {
       text-align: center;
-      padding: 3rem;
-      max-width: 600px;
-      margin: 0 auto;
+      padding: 1em;
+      font-size: 0.9em;
+      background-color: #222;
+      color: #888;
     }
-    
-    .empty-state i {
-      font-size: 4rem;
-      color: #ff5252;
-      margin-bottom: 1.5rem;
-    }
-    
-    .empty-state h2 {
-      font-family: 'Montserrat', sans-serif;
-      margin-bottom: 1rem;
-      color: #ff5252;
-    }
-    
-    .popular-title {
-      text-align: center;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.8rem;
-      margin: 2rem 0 1rem;
-      color: #ff5252;
-      position: relative;
-      display: inline-block;
-      width: 100%;
-    }
-    
-    .popular-title::after {
-      content: '';
-      display: block;
-      width: 80px;
-      height: 3px;
-      background: linear-gradient(to right, #ff5252, #ff0000);
-      margin: 10px auto;
-      border-radius: 2px;
-    }
-    
-    /* Movie Details Modal */
-    .modal {
-      display: none;
+    .dark-mode-toggle {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
-      overflow-y: auto;
-      padding: 2rem;
-    }
-    
-    .modal-content {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: rgba(30, 30, 30, 0.95);
-      border-radius: 15px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 0 50px rgba(255, 82, 82, 0.3);
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 82, 82, 0.8);
-      color: white;
+      top: 10px;
+      right: 10px;
+      padding: 0.5em 1em;
+      background-color: #333;
+      color: #fff;
       border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      font-size: 1.2rem;
+      border-radius: 5px;
       cursor: pointer;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
     }
-    
-    .close-modal:hover {
-      background: #ff5252;
-      transform: rotate(90deg);
+    .dark {
+      background-color: #fff;
+      color: #111;
     }
-    
-    .modal-poster {
-      width: 100%;
-      height: 500px;
-      object-fit: cover;
-    }
-    
-    .modal-details {
-      padding: 2rem;
-    }
-    
-    .modal-title {
-      font-size: 2.5rem;
-      color: #ff5252;
-      margin-bottom: 1rem;
-    }
-    
-    .modal-info {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    
-    .modal-rating {
-      font-size: 1.2rem;
-      background: rgba(255, 215, 0, 0.15);
-      padding: 5px 15px;
-      border-radius: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .modal-overview {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      color: #ddd;
-    }
-    
-    .modal-meta {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 1.5rem;
-    }
-    
-    .meta-item h4 {
-      color: #ff5252;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-    
-    .meta-item p {
-      color: #bbb;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        gap: 15px;
-        padding: 1rem;
-      }
-      
-      .logo-container {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      .search-box {
-        width: 100%;
-      }
-      
-      .results {
-        grid-template-columns: 1fr;
-      }
-      
-      .movie {
-        max-width: 400px;
-        margin: 0 auto;
-      }
-      
-      .modal-poster {
-        height: 300px;
-      }
-      
-      .modal-title {
-        font-size: 1.8rem;
-      }
+    .dark .post {
+      background-color: #f3f3f3;
     }
   </style>
 </head>
 <body>
-  <!-- Background Animation -->
-  <div class="bg-animation">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-  </div>
-  
-  <!-- Header -->
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Mode</button>
   <header>
-    <div class="logo-container">
-      <div class="logo">
-        <img src="https://cdn.ironman.my.id/i/x175tv.jpg" alt="Cinemaniac Logo">
-      </div>
-      <div class="logo-text">CINEMANIAC</div>
-    </div>
+    <img src="https://cdn.ironman.my.id/i/42b7oj.jpg" alt="GRIMMJOW-YK Logo">
+    <h1>GRIMMJOW-YK</h1>
   </header>
-  
-  <!-- Search Container -->
-  <div class="search-container">
-    <div class="search-box">
-      <i class="fas fa-search search-icon"></i>
-      <input type="text" id="searchInput" placeholder="Search any movie in the world..." onkeyup="searchMovie(event)"/>
-    </div>
-  </div>
-  
-  <!-- Loader -->
-  <div class="loader" id="loader"></div>
-  
-  <!-- Results Section -->
-  <div class="results" id="results">
-    <h2 class="popular-title">Popular Movies</h2>
-    <!-- Popular movies will be loaded here -->
-  </div>
-  
-  <!-- Footer -->
-  <footer>
-    <div>Created by <strong>@__.yadhu.__</strong></div>
-    <a href="https://instagram.com" class="instagram-link" target="_blank">
-      <i class="fab fa-instagram"></i>
-      <span>@__.yadhu.__</span>
-    </a>
-    <div class="copyright">
-      © 2025 CINEMANIAC. All rights reserved.
-    </div>
+
+  <main id="post-container"></main>
+
+  <footer class="footer">
+    © 2025 __.yadhu.__ | Follow on <a href="https://instagram.com" target="_blank" style="color: #aaa;">Instagram</a>
   </footer>
-  
-  <!-- Movie Details Modal -->
-  <div class="modal" id="movieModal">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">&times;</button>
-      <img id="modalPoster" class="modal-poster" src="" alt="Movie Poster">
-      <div class="modal-details">
-        <h2 id="modalTitle" class="modal-title"></h2>
-        <div class="modal-info">
-          <div class="modal-rating">
-            <i class="fas fa-star"></i>
-            <span id="modalRating"></span>
-          </div>
-          <div id="modalRelease"></div>
-          <div id="modalRuntime"></div>
-        </div>
-        <div class="genre-list" id="modalGenres"></div>
-        <p id="modalOverview" class="modal-overview"></p>
-        
-        <div class="modal-meta">
-          <div class="meta-item">
-            <h4>Director</h4>
-            <p id="modalDirector"></p>
-          </div>
-          <div class="meta-item">
-            <h4>Cast</h4>
-            <p id="modalCast"></p>
-          </div>
-          <div class="meta-item">
-            <h4>Budget</h4>
-            <p id="modalBudget"></p>
-          </div>
-          <div class="meta-item">
-            <h4>Revenue</h4>
-            <p id="modalRevenue"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
+
   <script>
-    // TMDB API Configuration
-    const API_KEY = '8c4e79ed80f9f915a47a7e509af7a9ff'; // Public demo API key
-    const API_URL = 'https://api.themoviedb.org/3';
-    const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
-    
-    // DOM Elements
-    const searchInput = document.getElementById('searchInput');
-    const resultsContainer = document.getElementById('results');
-    const loader = document.getElementById('loader');
-    const movieModal = document.getElementById('movieModal');
-    
-    // Fetch popular movies on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      fetchPopularMovies();
+    const posts = [
+      {
+        type: 'image',
+        title: 'MASTER!',
+        content: 'MASTER THE BLASTER',
+        media: 'https://cdn.ironman.my.id/i/mx4psy.jpg',
+        date: 'July 8, 2025, 11:31 AM IST'
+      },
+      {
+        type: 'video',
+        title: 'GRIMMJOW ☠️',
+        content: '',
+        media: 'https://cdn.ironman.my.id/i/z8qqze.mp4',
+        date: 'July 8, 2025, 11:31 AM IST'
+      },
+      {
+        type: 'image',
+        title: 'SACHIEN',
+        content: 'Sachein" is a Tamil romantic comedy film starring Vijay and Genelia, directed by John Mahendran. The movie tells the story of Sachein, a college student who falls for Shalini, a practical-minded girl who initially feigns indifference. A key plot point involves Sachein trying to win her over, with a 30-day challenge. The film also features Bipasha Basu, Vadivelu, and others in supporting roles. "Sachein" was re-released in theaters in April 2025 to celebrate its 20th anniversary.',
+        media: 'https://cdn.ironman.my.id/i/do9lv3.jpg',
+        date: 'July 8, 2025, 11:31 PM IST'
+      },
+      {
+        type: 'video',
+        title: 'Feel the Song 🎵',
+        content: 'Let the music speak.',
+        media: 'https://cdn.ironman.my.id/i/g1zojs.mp4',
+        date: 'July 8, 2025, 11:31 PM IST'
+      }
+    ];
+
+    const container = document.getElementById('post-container');
+
+    posts.forEach(post => {
+      const postEl = document.createElement('div');
+      postEl.className = 'post';
+
+      if (post.type === 'image') {
+        postEl.innerHTML = `
+          <img src="${post.media}" alt="${post.title}">
+          <h2>${post.title}</h2>
+          <p>${post.content}</p>
+          <p><strong>Posted by Yadhu</strong></p>
+          <p class="timestamp">${post.date}</p>
+        `;
+      } else if (post.type === 'video') {
+        postEl.innerHTML = `
+          <video controls>
+            <source src="${post.media}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <h2>${post.title}</h2>
+          <p>${post.content}</p>
+          <p><strong>Posted by Yadhu</strong></p>
+          <p class="timestamp">${post.date}</p>
+        `;
+      }
+
+      container.appendChild(postEl);
     });
-    
-    // Fetch popular movies
-    async function fetchPopularMovies() {
-      try {
-        loader.style.display = 'block';
-        const response = await fetch(`${API_URL}/movie/popular?api_key=${API_KEY}`);
-        const data = await response.json();
-        displayMovies(data.results);
-        loader.style.display = 'none';
-      } catch (error) {
-        console.error('Error fetching popular movies:', error);
-        loader.style.display = 'none';
-        resultsContainer.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-exclamation-triangle"></i>
-            <h2>Error Loading Movies</h2>
-            <p>Please try again later</p>
-          </div>
-        `;
-      }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
     }
-    
-    // Search movies
-    async function searchMovie(event) {
-      if (event.key === 'Enter') {
-        const query = searchInput.value.trim();
-        if (!query) return;
-        
-        try {
-          loader.style.display = 'block';
-          resultsContainer.innerHTML = '';
-          
-          const response = await fetch(`${API_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
-          const data = await response.json();
-          
-          if (data.results.length === 0) {
-            resultsContainer.innerHTML = `
-              <div class="empty-state">
-                <i class="fas fa-search"></i>
-                <h2>No Movies Found</h2>
-                <p>Try a different search term</p>
-              </div>
-            `;
-          } else {
-            displayMovies(data.results);
-          }
-          
-          loader.style.display = 'none';
-        } catch (error) {
-          console.error('Error searching movies:', error);
-          loader.style.display = 'none';
-          resultsContainer.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-exclamation-triangle"></i>
-              <h2>Search Failed</h2>
-              <p>Please try again later</p>
-            </div>
-          `;
-        }
-      }
-    }
-    
-    // Display movies
-    function displayMovies(movies) {
-      resultsContainer.innerHTML = '';
-      
-      if (!movies || movies.length === 0) {
-        resultsContainer.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-film"></i>
-            <h2>No Movies Found</h2>
-            <p>Try a different search</p>
-          </div>
-        `;
-        return;
-      }
-      
-      // Show section title for search results
-      if (searchInput.value) {
-        const title = document.createElement('h2');
-        title.className = 'popular-title';
-        title.textContent = `Search Results for "${searchInput.value}"`;
-        resultsContainer.appendChild(title);
-      }
-      
-      movies.forEach(movie => {
-        const movieEl = document.createElement('div');
-        movieEl.className = 'movie';
-        movieEl.innerHTML = `
-          <img src="${movie.poster_path ? IMG_PATH + movie.poster_path : 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}">
-          <h3>${movie.title}</h3>
-          <p><i class="far fa-calendar-alt"></i> ${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'}</p>
-          <div class="rating">
-            <i class="fas fa-star"></i> ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}/10
-          </div>
-          <p class="overview">${movie.overview || 'No description available.'}</p>
-          <button class="view-details" onclick="fetchMovieDetails(${movie.id})">View Details</button>
-        `;
-        resultsContainer.appendChild(movieEl);
-      });
-    }
-    
-    // Fetch movie details
-    async function fetchMovieDetails(movieId) {
-      try {
-        loader.style.display = 'block';
-        
-        // Fetch movie details
-        const movieResponse = await fetch(`${API_URL}/movie/${movieId}?api_key=${API_KEY}`);
-        const movieData = await movieResponse.json();
-        
-        // Fetch credits to get director and cast
-        const creditsResponse = await fetch(`${API_URL}/movie/${movieId}/credits?api_key=${API_KEY}`);
-        const creditsData = await creditsResponse.json();
-        
-        // Find director
-        const director = creditsData.crew.find(person => person.job === 'Director');
-        
-        // Get top 3 cast members
-        const cast = creditsData.cast.slice(0, 3).map(person => person.name).join(', ');
-        
-        // Format budget and revenue
-        const formatCurrency = amount => {
-          if (!amount) return 'N/A';
-          return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            notation: 'compact',
-            maximumFractionDigits: 1
-          }).format(amount);
-        };
-        
-        // Format runtime
-        const formatRuntime = minutes => {
-          if (!minutes) return 'N/A';
-          const hours = Math.floor(minutes / 60);
-          const mins = minutes % 60;
-          return `${hours}h ${mins}m`;
-        };
-        
-        // Populate modal
-        document.getElementById('modalPoster').src = movieData.poster_path ? IMG_PATH + movieData.poster_path : 'https://via.placeholder.com/500x750?text=No+Image';
-        document.getElementById('modalTitle').textContent = movieData.title;
-        document.getElementById('modalRating').textContent = `${movieData.vote_average.toFixed(1)}/10`;
-        document.getElementById('modalRelease').textContent = `Release: ${movieData.release_date || 'N/A'}`;
-        document.getElementById('modalRuntime').textContent = `Runtime: ${formatRuntime(movieData.runtime)}`;
-        document.getElementById('modalOverview').textContent = movieData.overview || 'No overview available.';
-        document.getElementById('modalDirector').textContent = director ? director.name : 'N/A';
-        document.getElementById('modalCast').textContent = cast || 'N/A';
-        document.getElementById('modalBudget').textContent = formatCurrency(movieData.budget);
-        document.getElementById('modalRevenue').textContent = formatCurrency(movieData.revenue);
-        
-        // Populate genres
-        const genresContainer = document.getElementById('modalGenres');
-        genresContainer.innerHTML = '';
-        movieData.genres.forEach(genre => {
-          const genreEl = document.createElement('span');
-          genreEl.className = 'genre';
-          genreEl.textContent = genre.name;
-          genresContainer.appendChild(genreEl);
-        });
-        
-        // Show modal
-        movieModal.style.display = 'block';
-        loader.style.display = 'none';
-      } catch (error) {
-        console.error('Error fetching movie details:', error);
-        loader.style.display = 'none';
-        alert('Failed to load movie details. Please try again later.');
-      }
-    }
-    
-    // Close modal
-    function closeModal() {
-      movieModal.style.display = 'none';
-    }
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', (e) => {
-      if (e.target === movieModal) {
-        closeModal();
-      }
-    });
   </script>
 </body>
 </html>
