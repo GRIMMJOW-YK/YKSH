@@ -1,159 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GRIMMJOW-YK</title>
-  <link rel="icon" href="https://cdn.ironman.my.id/i/42b7oj.jpg" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinemaniac - Movie Search</title>
+  <link rel="icon" href="https://cdn.ironman.my.id/i/x175tv.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      transition: background-color 0.3s, color 0.3s;
+      box-sizing: border-box;
     }
-    header {
-      text-align: center;
-      padding: 1em;
-      background-color: #222;
-    }
-    header img {
-      width: 96px;
-      height: 96px;
-      border-radius: 12px;
-      border: 2px solid #555;
-    }
-    h1 {
-      margin-top: 0.5em;
-      font-size: 2em;
-      color: #f33;
-    }
-    .post {
-      background-color: #1c1c1c;
-      border-radius: 10px;
-      margin: 1em;
-      padding: 1em;
-      transition: transform 0.3s;
-    }
-    .post:hover {
-      transform: scale(1.01);
-    }
-    .post img, .post video {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-    .timestamp {
-      color: #aaa;
-      font-size: 0.9em;
-      margin-top: 0.5em;
-    }
-    .footer {
-      text-align: center;
-      padding: 1em;
-      font-size: 0.9em;
-      background-color: #222;
-      color: #888;
-    }
-    .dark-mode-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 0.5em 1em;
-      background-color: #333;
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1c1c1c 100%);
       color: #fff;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Background Animation */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+    
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 82, 82, 0.1);
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    .circle:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+    
+    .circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      left: 80%;
+      animation-delay: 2s;
+    }
+    
+    .circle:nth-child(3) {
+      width: 250px;
+      height: 250px;
+      top: 40%;
+      left: 70%;
+      animation-delay: 4s;
+    }
+    
+    .circle:nth-child(4) {
+      width: 180px;
+      height: 180px;
+      top: 80%;
+      left: 10%;
+      animation-delay: 6s;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-40px) rotate(180deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(0) rotate(360deg);
+        opacity: 1;
+      }
+    }
+    
+    /* Header Styles */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2rem;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid rgba(255, 82, 82, 0.2);
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff5252, #ff0000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #fff;
+      box-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+    }
+    
+    .logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .logo-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      background: linear-gradient(to right, #ff5252, #ff0000);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+    }
+    
+    /* Search Container */
+    .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2rem auto;
+      flex-direction: column;
+      padding: 0 1rem;
+      position: relative;
+    }
+    
+    .search-box {
+      width: 90%;
+      max-width: 700px;
+      position: relative;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      padding-left: 60px;
+      font-size: 1.1rem;
       border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      border-radius: 50px;
+      outline: none;
+      background: rgba(30, 30, 30, 0.8);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 82, 82, 0.2);
     }
-    .dark {
-      background-color: #fff;
-      color: #111;
+    
+    .search-box input:focus {
+      box-shadow: 0 0 25px rgba(255, 82, 82, 0.5);
+      border-color: rgba(255, 82, 82, 0.4);
     }
-    .dark .post {
-      background-color: #f3f3f3;
+    
+    .search-icon {
+      position: absolute;
+      left: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff5252;
+      font-size: 1.4rem;
+    }
+    
+    /* Results Section */
+    .results {
+      max-width: 1200px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 0 1.5rem;
+    }
+    
+    .movie {
+      background: rgba(30, 30, 30, 0.7);
+      padding: 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 82, 82, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .movie:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 82, 82, 0.3);
+    }
+    
+    .movie img {
+      width: 100%;
+      border-radius: 10px;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    
+    .movie h3 {
+      margin: 0.5rem 0 0.2rem;
+      color: #ff5252;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+    }
+    
+    .movie p {
+      margin: 0.3rem 0;
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+    
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 215, 0, 0.15);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+    
+    .rating i {
+      color: gold;
+    }
+    
+    .genre-list {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+    
+    .genre {
+      background: rgba(255, 82, 82, 0.2);
+      color: #ff9a8b;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+    
+    .overview {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #bbb;
+      flex-grow: 1;
+    }
+    
+    /* Footer */
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.95rem;
+      color: #aaa;
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(5px);
+    }
+    
+    .creator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .creator strong {
+      color: #ff5252;
+      font-weight: 600;
+    }
+    
+    .instagram-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 1rem;
+      color: #ff9a8b;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: rgba(255, 82, 82, 0.15);
+      padding: 8px 20px;
+      border-radius: 50px;
+    }
+    
+    .instagram-link:hover {
+      background: rgba(255, 82, 82, 0.3);
+      transform: translateY(-3px);
+    }
+    
+    .instagram-link img {
+      width: 20px;
+      height: 20px;
+      filter: invert(1);
+    }
+    
+    .copyright {
+      margin-top: 1.5rem;
+      color: #777;
+    }
+    
+    /* Loading Animation */
+    .loader {
+      display: none;
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 82, 82, 0.3);
+      border-top: 5px solid #ff5252;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      color: #ff5252;
+      margin-bottom: 1.5rem;
+    }
+    
+    .empty-state h2 {
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 1rem;
+      color: #ff5252;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 1rem;
+      }
+      
+      .logo-container {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .search-box {
+        width: 100%;
+      }
+      
+      .results {
+        grid-template-columns: 1fr;
+      }
+      
+      .movie {
+        max-width: 400px;
+        margin: 0 auto;
+      }
     }
   </style>
 </head>
 <body>
-  <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Mode</button>
+  <!-- Background Animation -->
+  <div class="bg-animation">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+  
+  <!-- Header -->
   <header>
-    <img src="https://cdn.ironman.my.id/i/42b7oj.jpg" alt="GRIMMJOW-YK Logo">
-    <h1>GRIMMJOW-YK</h1>
+    <div class="logo-container">
+      <div class="logo">
+        <img src="https://cdn.ironman.my.id/i/x175tv.jpg" alt="Cinemaniac Logo">
+      </div>
+      <div class="logo-text">CINEMANIAC</div>
+    </div>
   </header>
-
-  <main id="post-container"></main>
-
-  <footer class="footer">
-    © 2025 __.yadhu.__ | Follow on <a href="https://instagram.com" target="_blank" style="color: #aaa;">Instagram</a>
+  
+  <!-- Search Container -->
+  <div class="search-container">
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search any movie in the world..." onkeyup="searchMovie(event)"/>
+    </div>
+  </div>
+  
+  <!-- Loader -->
+  <div class="loader" id="loader"></div>
+  
+  <!-- Results Section -->
+  <div class="results" id="results">
+    <div class="empty-state">
+      <i class="fas fa-film"></i>
+      <h2>Discover Your Next Favorite Movie</h2>
+      <p>Search for any movie to get details, ratings, and more!</p>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div>Created by <strong>@__.yadhu.__</strong></div>
+    <a href="#" class="instagram-link">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram Logo">
+      <span>@__.yadhu.__</span>
+    </a>
+    <div class="copyright">
+      © 2025 CINEMANIAC. All rights reserved.
+    </div>
   </footer>
-
+  
   <script>
-    const posts = [
-      {
-        type: 'image',
-        title: 'MASTER!',
-        content: 'MASTER THE BLASTER',
-        media: 'https://cdn.ironman.my.id/i/mx4psy.jpg',
-        date: 'July 8, 2025, 11:31 AM IST'
-      },
-      {
-        type: 'video',
-        title: 'GRIMMJOW ☠️',
-        content: '',
-        media: 'https://cdn.ironman.my.id/i/z8qqze.mp4',
-        date: 'July 8, 2025, 11:31 AM IST'
-      },
-      {
-        type: 'image',
-        title: 'SACHIEN',
-        content: 'Sachein" is a Tamil romantic comedy film starring Vijay and Genelia, directed by John Mahendran. The movie tells the story of Sachein, a college student who falls for Shalini, a practical-minded girl who initially feigns indifference. A key plot point involves Sachein trying to win her over, with a 30-day challenge. The film also features Bipasha Basu, Vadivelu, and others in supporting roles. "Sachein" was re-released in theaters in April 2025 to celebrate its 20th anniversary.',
-        media: 'https://cdn.ironman.my.id/i/do9lv3.jpg',
-        date: 'July 8, 2025, 11:31 PM IST'
-      },
-      {
-        type: 'video',
-        title: 'Feel the Song 🎵',
-        content: 'Let the music speak.',
-        media: 'https://cdn.ironman.my.id/i/g1zojs.mp4',
-        date: 'July 8, 2025, 11:31 PM IST'
+    // Sample movie data (in a real app, this would come from TMDB API)
+    const apiKey = 'YOUR_TMDB_API_KEY'; // Replace with your TMDB API Key
+    const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
+    
+    // Sample genres for movies
+    const genres = {
+      28: "Action",
+      12: "Adventure",
+      16: "Animation",
+      35: "Comedy",
+      80: "Crime",
+      99: "Documentary",
+      18: "Drama",
+      10751: "Family",
+      14: "Fantasy",
+      36: "History",
+      27: "Horror",
+      10402: "Music",
+      9648: "Mystery",
+      10749: "Romance",
+      878: "Science Fiction",
+      10770: "TV Movie",
+      53: "Thriller",
+      10752: "War",
+      37: "Western"
+    };
+    
+    // Simulated API call with sample data
+    async function searchMovie(event) {
+      if (event.key === 'Enter') {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) return;
+        
+        // Show loader
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('results').innerHTML = '';
+        
+        // Simulate API delay
+        setTimeout(() => {
+          // In a real app, you would fetch from TMDB API:
+          // fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+          //   .then(res => res.json())
+          //   .then(data => displayResults(data.results))
+          
+          // For this demo, we'll use sample data
+          displayResults(getSampleMovies());
+          document.getElementById('loader').style.display = 'none';
+        }, 1000);
       }
-    ];
-
-    const container = document.getElementById('post-container');
-
-    posts.forEach(post => {
-      const postEl = document.createElement('div');
-      postEl.className = 'post';
-
-      if (post.type === 'image') {
-        postEl.innerHTML = `
-          <img src="${post.media}" alt="${post.title}">
-          <h2>${post.title}</h2>
-          <p>${post.content}</p>
-          <p><strong>Posted by Yadhu</strong></p>
-          <p class="timestamp">${post.date}</p>
-        `;
-      } else if (post.type === 'video') {
-        postEl.innerHTML = `
-          <video controls>
-            <source src="${post.media}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <h2>${post.title}</h2>
-          <p>${post.content}</p>
-          <p><strong>Posted by Yadhu</strong></p>
-          <p class="timestamp">${post.date}</p>
-        `;
-      }
-
-      container.appendChild(postEl);
-    });
-
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
     }
+    
+    function displayResults(movies) {
+      const results = document.getElementById('results');
+      results.innerHTML = '';
+      
+      if (movies.length === 0) {
+        results.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-search"></i>
+            <h2>No Movies Found</h2>
+            <p>Try a different search term</p>
+          </div>
+        `;
+        return;
+      }
+      
+      movies.forEach(movie => {
+        const div = document.createElement('div');
+        div.className = 'movie';
+        
+        // Generate genre badges
+        const genreHTML = movie.genre_ids.map(id => 
+          `<span class="genre">${genres[id] || 'Unknown'}</span>`
+        ).join('');
+        
+        div.innerHTML = `
+          <img src="${movie.poster_path ? baseImageUrl + movie.poster_path : 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}">
+          <h3>${movie.title}</h3>
+          <p><i class="far fa-calendar-alt"></i> ${movie.release_date}</p>
+          <div class="rating">
+            <i class="fas fa-star"></i> ${movie.vote_average}/10
+          </div>
+          <div class="genre-list">
+            ${genreHTML}
+          </div>
+          <p class="overview">${movie.overview || 'No description available.'}</p>
+        `;
+        
+        results.appendChild(div);
+      });
+    }
+    
+    // Sample movie data for demonstration
+    function getSampleMovies() {
+      return [
+        {
+          id: 1,
+          title: "Inception",
+          vote_average: 8.4,
+          release_date: "2010-07-16",
+          poster_path: "/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+          overview: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+          genre_ids: [28, 878, 12]
+        },
+        {
+          id: 2,
+          title: "The Dark Knight",
+          vote_average: 8.5,
+          release_date: "2008-07-18",
+          poster_path: "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+          overview: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+          genre_ids: [28, 80, 18]
+        },
+        {
+          id: 3,
+          title: "Sachein",
+          vote_average: 7.2,
+          release_date: "2005-04-14",
+          poster_path: "/path/to/sachein-poster.jpg",
+          overview: "Sachein is a college student who falls for Shalini. He tries to win her over with his charm and persistence, leading to a romantic journey filled with challenges.",
+          genre_ids: [10749, 35, 18]
+        },
+        {
+          id: 4,
+          title: "Interstellar",
+          vote_average: 8.6,
+          release_date: "2014-11-07",
+          poster_path: "/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+          overview: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+          genre_ids: [12, 18, 878]
+        },
+        {
+          id: 5,
+          title: "Parasite",
+          vote_average: 8.6,
+          release_date: "2019-11-08",
+          poster_path: "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+          overview: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+          genre_ids: [35, 18, 53]
+        },
+        {
+          id: 6,
+          title: "La La Land",
+          vote_average: 7.9,
+          release_date: "2016-12-25",
+          poster_path: "/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
+          overview: "While navigating their careers in Los Angeles, a pianist and an actress fall in love while attempting to reconcile their aspirations for the future.",
+          genre_ids: [10749, 18, 10402]
+        }
+      ];
+    }
+    
+    // Initialize with popular movies
+    window.onload = function() {
+      displayResults(getSampleMovies());
+    };
   </script>
 </body>
 </html>
