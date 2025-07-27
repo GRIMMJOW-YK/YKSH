@@ -1,38 +1,602 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="google-site-verification" content="YOUR_CODE_HERE" />
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Cosmic Perspective | Earth & Space Inspiration</title>  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+    <style>  
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+        }  body {  
+        background: linear-gradient(135deg, #0a0e17, #1a2138, #2a1b45);  
+        color: #e0f7fa;  
+        min-height: 100vh;  
+        overflow-x: hidden;  
+        position: relative;  
+        line-height: 1.6;  
+    }  
+      
+    .stars {  
+        position: fixed;  
+        top: 0;  
+        left: 0;  
+        width: 100%;  
+        height: 100%;  
+        pointer-events: none;  
+        z-index: -2;  
+    }  
+      
+    .star {  
+        position: absolute;  
+        background: #fff;  
+        border-radius: 50%;  
+        animation: twinkle var(--duration) infinite ease-in-out;  
+    }  
+      
+    @keyframes twinkle {  
+        0%, 100% { opacity: 0.2; }  
+        50% { opacity: 1; }  
+    }  
+      
+    header {  
+        text-align: center;  
+        padding: 3rem 1rem 2rem;  
+        background: rgba(10, 15, 30, 0.7);  
+        border-bottom: 1px solid rgba(100, 255, 218, 0.3);  
+        position: relative;  
+        overflow: hidden;  
+        backdrop-filter: blur(5px);  
+    }  
+      
+    .earth-container {  
+        position: absolute;  
+        top: 20px;  
+        right: 20px;  
+        width: 80px;  
+        height: 80px;  
+        animation: rotate 30s linear infinite;  
+    }  
+      
+    .earth {  
+        width: 100%;  
+        height: 100%;  
+        background: url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80') no-repeat center center/cover;  
+        border-radius: 50%;  
+        box-shadow: 0 0 20px rgba(64, 224, 208, 0.5),   
+                    0 0 40px rgba(64, 224, 208, 0.3),  
+                    inset 0 0 50px rgba(0, 0, 0, 0.8);  
+    }  
+      
+    @keyframes rotate {  
+        0% { transform: rotate(0deg); }  
+        100% { transform: rotate(360deg); }  
+    }  
+      
+    h1 {  
+        font-family: 'Orbitron', sans-serif;  
+        font-size: 3.2rem;  
+        margin-bottom: 0.8rem;  
+        color: #64ffda;  
+        text-shadow: 0 0 15px rgba(100, 255, 218, 0.7);  
+        letter-spacing: 3px;  
+        background: linear-gradient(to right, #64ffda, #00c896);  
+        -webkit-background-clip: text;  
+        -webkit-text-fill-color: transparent;  
+    }  
+      
+    .subtitle {  
+        font-size: 1.3rem;  
+        color: #a8b2d1;  
+        max-width: 800px;  
+        margin: 0 auto;  
+        line-height: 1.7;  
+    }  
+      
+    .container {  
+        max-width: 1200px;  
+        margin: 2.5rem auto;  
+        padding: 0 1.5rem;  
+    }  
+      
+    .card {  
+        background: rgba(17, 25, 54, 0.7);  
+        border-radius: 18px;  
+        padding: 2.5rem;  
+        margin-bottom: 2.5rem;  
+        box-shadow: 0 12px 35px rgba(2, 8, 20, 0.8);  
+        border: 1px solid rgba(100, 255, 218, 0.15);  
+        transition: transform 0.4s ease, box-shadow 0.4s ease;  
+        backdrop-filter: blur(8px);  
+    }  
+      
+    .card:hover {  
+        transform: translateY(-8px);  
+        box-shadow: 0 18px 45px rgba(2, 8, 20, 0.95);  
+    }  
+      
+    .card h2 {  
+        font-family: 'Space Mono', monospace;  
+        color: #64ffda;  
+        margin-bottom: 1.8rem;  
+        font-size: 2.1rem;  
+        display: flex;  
+        align-items: center;  
+        padding-bottom: 0.8rem;  
+        border-bottom: 2px solid rgba(100, 255, 218, 0.2);  
+    }  
+      
+    .card h2 i {  
+        margin-right: 14px;  
+        color: #ff79c6;  
+        font-size: 1.8rem;  
+    }  
+      
+    .advice-container {  
+        display: grid;  
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));  
+        gap: 2rem;  
+        margin-top: 1.5rem;  
+    }  
+      
+    .advice-card {  
+        background: linear-gradient(145deg, rgba(23, 42, 69, 0.8), rgba(15, 30, 60, 0.9));  
+        border-radius: 14px;  
+        padding: 2rem;  
+        transition: all 0.4s ease;  
+        border-left: 4px solid #64ffda;  
+        box-shadow: 0 8px 25px rgba(0, 5, 15, 0.6);  
+    }  
+      
+    .advice-card:hover {  
+        transform: translateY(-5px);  
+        box-shadow: 0 12px 30px rgba(0, 5, 15, 0.75);  
+        border-left: 4px solid #ff79c6;  
+    }  
+      
+    .advice-card h3 {  
+        color: #ff79c6;  
+        margin-bottom: 1rem;  
+        font-size: 1.4rem;  
+        display: flex;  
+        align-items: center;  
+    }  
+      
+    .advice-card h3 i {  
+        margin-right: 10px;  
+        font-size: 1.2rem;  
+    }  
+      
+    .advice-card p {  
+        line-height: 1.7;  
+        color: #d0d8f0;  
+        font-size: 1.1rem;  
+    }  
+      
+    .gallery {  
+        display: grid;  
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  
+        gap: 2rem;  
+        margin-top: 1.5rem;  
+    }  
+      
+    .space-img {  
+        border-radius: 14px;  
+        overflow: hidden;  
+        height: 280px;  
+        position: relative;  
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);  
+        transition: transform 0.4s ease;  
+        border: 1px solid rgba(100, 255, 218, 0.15);  
+    }  
+      
+    .space-img:hover {  
+        transform: scale(1.03) rotate(1deg);  
+    }  
+      
+    .space-img img {  
+        width: 100%;  
+        height: 100%;  
+        object-fit: cover;  
+        transition: transform 0.7s ease;  
+    }  
+      
+    .space-img:hover img {  
+        transform: scale(1.15);  
+    }  
+      
+    .img-title {  
+        position: absolute;  
+        bottom: 0;  
+        left: 0;  
+        right: 0;  
+        background: linear-gradient(to top, rgba(10, 15, 30, 0.95), transparent);  
+        color: #64ffda;  
+        padding: 15px;  
+        font-size: 1.1rem;  
+        text-align: center;  
+        transform: translateY(100%);  
+        transition: transform 0.4s ease;  
+        font-weight: 500;  
+    }  
+      
+    .space-img:hover .img-title {  
+        transform: translateY(0);  
+    }  
+      
+    .camera-section {  
+        text-align: center;  
+        padding: 0 1rem;  
+    }  
+      
+    .camera-container {  
+        margin: 2.5rem auto;  
+        max-width: 650px;  
+        background: linear-gradient(145deg, rgba(23, 42, 69, 0.8), rgba(15, 30, 60, 0.9));  
+        border-radius: 18px;  
+        padding: 2.5rem;  
+        position: relative;  
+        border: 1px solid rgba(100, 255, 218, 0.2);  
+        box-shadow: 0 12px 35px rgba(2, 8, 20, 0.8);  
+    }  
+      
+    #camera-feed {  
+        width: 100%;  
+        background: #000;  
+        border-radius: 14px;  
+        display: none;  
+        margin-bottom: 1.5rem;  
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);  
+    }  
+      
+    .btn {  
+        background: linear-gradient(135deg, #64ffda, #00c896);  
+        color: #0a192f;  
+        border: none;  
+        padding: 14px 36px;  
+        font-size: 1.1rem;  
+        font-weight: 600;  
+        border-radius: 35px;  
+        cursor: pointer;  
+        transition: all 0.3s ease;  
+        display: inline-flex;  
+        align-items: center;  
+        justify-content: center;  
+        margin: 12px 8px;  
+        box-shadow: 0 5px 20px rgba(100, 255, 218, 0.3);  
+    }  
+      
+    .btn i {  
+        margin-right: 10px;  
+        font-size: 1.2rem;  
+    }  
+      
+    .btn:hover {  
+        transform: translateY(-4px);  
+        box-shadow: 0 8px 25px rgba(100, 255, 218, 0.5);  
+    }  
+      
+    .btn:active {  
+        transform: translateY(1px);  
+    }  
+      
+    .btn-secondary {  
+        background: linear-gradient(135deg, #ff79c6, #d166a3);  
+        box-shadow: 0 5px 20px rgba(255, 121, 198, 0.3);  
+    }  
+      
+    .btn-secondary:hover {  
+        box-shadow: 0 8px 25px rgba(255, 121, 198, 0.5);  
+    }  
+      
+    .permission-note {  
+        margin-top: 1.5rem;  
+        font-size: 1rem;  
+        color: #a8b2d1;  
+        background: rgba(255, 255, 255, 0.08);  
+        padding: 1.2rem;  
+        border-radius: 12px;  
+        max-width: 500px;  
+        margin: 1.5rem auto 0;  
+    }  
+      
+    .permission-note i {  
+        color: #64ffda;  
+        margin-right: 8px;  
+    }  
+      
+    footer {  
+        text-align: center;  
+        padding: 2.5rem;  
+        background: rgba(10, 15, 30, 0.7);  
+        border-top: 1px solid rgba(100, 255, 218, 0.3);  
+        margin-top: 2rem;  
+        font-size: 1rem;  
+        color: #a8b2d1;  
+        backdrop-filter: blur(5px);  
+    }  
+      
+    footer p {  
+        margin: 0.8rem 0;  
+        max-width: 800px;  
+        margin-left: auto;  
+        margin-right: auto;  
+    }  
+      
+    .pulse {  
+        animation: pulse 2s infinite;  
+    }  
+      
+    @keyframes pulse {  
+        0% { transform: scale(1); }  
+        50% { transform: scale(1.05); }  
+        100% { transform: scale(1); }  
+    }  
+      
+    .quote {  
+        font-style: italic;  
+        color: #a8b2d1;  
+        margin: 1.5rem 0;  
+        padding: 1.5rem;  
+        border-left: 3px solid #ff79c6;  
+        background: rgba(255, 121, 198, 0.05);  
+        border-radius: 0 12px 12px 0;  
+        font-size: 1.15rem;  
+    }  
+      
+    .quote-author {  
+        text-align: right;  
+        color: #64ffda;  
+        margin-top: 0.5rem;  
+        font-style: normal;  
+    }  
+      
+    @media (max-width: 768px) {  
+        h1 {  
+            font-size: 2.4rem;  
+        }  
+        .subtitle {  
+            font-size: 1.1rem;  
+        }  
+        .earth-container {  
+            width: 60px;  
+            height: 60px;  
+            top: 15px;  
+            right: 15px;  
+        }  
+        .card {  
+            padding: 1.8rem;  
+        }  
+        .card h2 {  
+            font-size: 1.8rem;  
+        }  
+    }  
+      
+    @media (max-width: 480px) {  
+        h1 {  
+            font-size: 2rem;  
+        }  
+        .camera-container {  
+            padding: 1.5rem;  
+        }  
+        .btn {  
+            padding: 12px 24px;  
+            font-size: 1rem;  
+        }  
+    }  
+</style>
 
-  <title>YKSH - My Website</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #f1f1f1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .content {
-      text-align: center;
-    }
-    h1 {
-      font-size: 3em;
-      color: #00ffcc;
-    }
-    p {
-      font-size: 1.2em;
-    }
-  </style>
-</head>
-<body>
-  <div class="content">
-    <h1>Welcome to YKSH</h1>
-    <p>This is my awesome website hosted on Vercel and GitHub!</p>
-  </div>
-</body>
-</html>
+</head>  
+<body>  
+    <!-- Background stars -->  
+    <div class="stars" id="stars"></div>  <header>  
+    <div class="earth-container">  
+        <div class="earth"></div>  
+    </div>  
+    <h1>COSMIC PERSPECTIVE</h1>  
+    <p class="subtitle">Discover the wonders of our universe and gain wisdom for your journey on this pale blue dot we call home</p>  
+</header>  
+
+<div class="container">  
+    <div class="card">  
+        <h2><i class="fas fa-lightbulb"></i> Cosmic Wisdom</h2>  
+        <div class="quote">  
+            "Look again at that dot. That's here. That's home. That's us. On it everyone you love, everyone you know, everyone you ever heard of, every human being who ever was, lived out their lives."  
+            <div class="quote-author">- Carl Sagan, Pale Blue Dot</div>  
+        </div>  
+        <div class="advice-container">  
+            <div class="advice-card">  
+                <h3><i class="fas fa-compass"></i> Embrace the Unknown</h3>  
+                <p>Just as space holds countless mysteries, life is full of unknowns. Embrace uncertainty as an opportunity for growth and discovery. The universe reveals its secrets only to the curious.</p>  
+            </div>  
+            <div class="advice-card">  
+                <h3><i class="fas fa-project-diagram"></i> Think Interconnected</h3>  
+                <p>Every star and planet exists in relationship to others. Remember that your actions ripple through the web of life on Earth. We are all made of stardust, connected across time and space.</p>  
+            </div>  
+            <div class="advice-card">  
+                <h3><i class="fas fa-expand-arrows-alt"></i> Expand Your Horizons</h3>  
+                <p>The universe is vast beyond comprehension. Never stop learning and expanding your perspective. Each new understanding brings us closer to seeing our place in the cosmic tapestry.</p>  
+            </div>  
+        </div>  
+    </div>  
+
+    <div class="card">  
+        <h2><i class="fas fa-stars"></i> Galactic Gallery</h2>  
+        <div class="gallery">  
+            <div class="space-img">  
+                <img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80" alt="Milky Way Galaxy">  
+                <div class="img-title">Milky Way Galaxy</div>  
+            </div>  
+            <div class="space-img">  
+                <img src="https://images.unsplash.com/photo-1502136969935-8d8eef54d77b?q=80" alt="Earth from Space">  
+                <div class="img-title">Earth from Space</div>  
+            </div>  
+            <div class="space-img">  
+                <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80" alt="Nebula">  
+                <div class="img-title">Stellar Nebula</div>  
+            </div>  
+            <div class="space-img">  
+                <img src="https://images.unsplash.com/photo-1457365050282-c53d772ef8b2?q=80" alt="Aurora Borealis">  
+                <div class="img-title">Aurora Borealis</div>  
+            </div>  
+        </div>  
+    </div>  
+
+    <div class="card">  
+        <h2><i class="fas fa-camera"></i> Cosmic Perspective</h2>  
+        <div class="camera-section">  
+            <p>See yourself from a cosmic perspective. Enable your camera to view yourself against the backdrop of the universe and capture a cosmic selfie.</p>  
+              
+            <div class="camera-container">  
+                <video id="camera-feed" autoplay playsinline></video>  
+                <button class="btn pulse" id="enable-camera">  
+                    <i class="fas fa-camera"></i> Enable Camera  
+                </button>  
+                <button class="btn btn-secondary" id="capture" disabled>  
+                    <i class="fas fa-camera-retro"></i> Capture Cosmic Self  
+                </button>  
+                  
+                <div class="permission-note">  
+                    <i class="fas fa-info-circle"></i> Your camera will only be accessed with your explicit permission. No images are stored or transmitted. This feature requires HTTPS for security.  
+                </div>  
+            </div>  
+        </div>  
+    </div>  
+
+    <div class="card">  
+        <h2><i class="fas fa-rocket"></i> Space Exploration Tips</h2>  
+        <div class="advice-container">  
+            <div class="advice-card">  
+                <h3><i class="fas fa-eye"></i> Look Up</h3>  
+                <p>Take time each day to look at the sky. Notice the clouds, the stars, the moon. This simple act connects you to the cosmos and reminds us of our place in the universe.</p>  
+            </div>  
+            <div class="advice-card">  
+                <h3><i class="fas fa-satellite"></i> Reduce Your Orbit</h3>  
+                <p>Like planets in a solar system, simplify your life by focusing on what truly matters. Reduce clutter and distractions to maintain your trajectory toward meaningful goals.</p>  
+            </div>  
+            <div class="advice-card">  
+                <h3><i class="fas fa-globe-americas"></i> Embrace Your Smallness</h3>  
+                <p>In the vastness of space, our problems seem smaller. This perspective can bring peace and help you focus on what truly matters in the brief time we have on this planet.</p>  
+            </div>  
+        </div>  
+    </div>  
+</div>  
+
+<footer>  
+    <p>Created with the wonder of the cosmos in mind</p>  
+    <p>"We are a way for the cosmos to know itself." - Carl Sagan</p>  
+    <p>© 2023 Cosmic Perspective | Earth & Space Inspiration Hub | All rights reserved</p>  
+</footer>  
+
+<script>  
+    // Create background stars  
+    function createStars() {  
+        const starsContainer = document.getElementById('stars');  
+        const starCount = 200;  
+          
+        for (let i = 0; i < starCount; i++) {  
+            const star = document.createElement('div');  
+            star.classList.add('star');  
+              
+            // Random size  
+            const size = Math.random() * 3;  
+            star.style.width = `${size}px`;  
+            star.style.height = `${size}px`;  
+              
+            // Random position  
+            star.style.left = `${Math.random() * 100}%`;  
+            star.style.top = `${Math.random() * 100}%`;  
+              
+            // Random animation duration  
+            star.style.setProperty('--duration', `${Math.random() * 5 + 3}s`);  
+              
+            starsContainer.appendChild(star);  
+        }  
+    }  
+      
+    // Camera functionality  
+    const enableCameraBtn = document.getElementById('enable-camera');  
+    const captureBtn = document.getElementById('capture');  
+    const cameraFeed = document.getElementById('camera-feed');  
+    let stream = null;  
+      
+    enableCameraBtn.addEventListener('click', async () => {  
+        try {  
+            stream = await navigator.mediaDevices.getUserMedia({   
+                video: { facingMode: "user" }   
+            });  
+              
+            cameraFeed.srcObject = stream;  
+            cameraFeed.style.display = 'block';  
+            captureBtn.disabled = false;  
+            enableCameraBtn.textContent = 'Camera Enabled';  
+            enableCameraBtn.classList.remove('pulse');  
+        } catch (err) {  
+            console.error("Error accessing camera:", err);  
+            alert('Could not access the camera. Please ensure you have given permission and are using a secure connection (HTTPS).');  
+        }  
+    });  
+      
+    captureBtn.addEventListener('click', () => {  
+        if (!stream) return;  
+          
+        // Create canvas to capture image  
+        const canvas = document.createElement('canvas');  
+        canvas.width = cameraFeed.videoWidth;  
+        canvas.height = cameraFeed.videoHeight;  
+        const ctx = canvas.getContext('2d');  
+        ctx.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);  
+          
+        // Create space background  
+        const spaceCanvas = document.createElement('canvas');  
+        spaceCanvas.width = canvas.width;  
+        spaceCanvas.height = canvas.height;  
+        const spaceCtx = spaceCanvas.getContext('2d');  
+          
+        // Draw space background  
+        const gradient = spaceCtx.createRadialGradient(  
+            spaceCanvas.width/2, spaceCanvas.height/2, 0,  
+            spaceCanvas.width/2, spaceCanvas.height/2, spaceCanvas.width/2  
+        );  
+        gradient.addColorStop(0, '#0a0a2a');  
+        gradient.addColorStop(1, '#2c5364');  
+        spaceCtx.fillStyle = gradient;  
+        spaceCtx.fillRect(0, 0, spaceCanvas.width, spaceCanvas.height);  
+          
+        // Draw stars  
+        spaceCtx.fillStyle = 'white';  
+        for (let i = 0; i < 150; i++) {  
+            const x = Math.random() * spaceCanvas.width;  
+            const y = Math.random() * spaceCanvas.height;  
+            const radius = Math.random() * 1.5;  
+            spaceCtx.beginPath();  
+            spaceCtx.arc(x, y, radius, 0, Math.PI * 2);  
+            spaceCtx.fill();  
+        }  
+          
+        // Draw captured image with transparency  
+        spaceCtx.globalAlpha = 0.7;  
+        spaceCtx.drawImage(canvas, 0, 0);  
+          
+        // Create download link  
+        const dataURL = spaceCanvas.toDataURL('image/png');  
+        const link = document.createElement('a');  
+        link.href = dataURL;  
+        link.download = 'cosmic-selfie.png';  
+        document.body.appendChild(link);  
+        link.click();  
+        document.body.removeChild(link);  
+          
+        alert('Your cosmic selfie has been downloaded!');  
+    });  
+      
+    // Initialize  
+    window.addEventListener('DOMContentLoaded', () => {  
+        createStars();  
+    });  
+</script>
+
+</body>  
+  </ht
