@@ -16,7 +16,7 @@ This website is created and hosted freely using:
 
 - **Name:** Yadhu Krishna  
 - **Phone:** +91 9745075295  
-- **Instagram:** [@__.yadhu.__](https://instagram.com/__.yadhu.__)
+- **Instagram:** [@__. yadhuu.__](https://instagram.com/__.yadhu.__)
 
 ## 📁 Sitemap & SEO
 
